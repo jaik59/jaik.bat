@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JAIK PANEL</title>
+  <style>
+    body {
+      background-color: #000;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .panel, .login {
+      background: #1e1e2f;
+      color: white;
+      padding: 20px;
+      border-radius: 15px;
+      width: 300px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.4s ease;
+    }
+
+    .panel.show, .login.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .panel h2, .login h2 {
+      text-align: center;
+      color: #b266ff;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      margin-bottom: 15px;
+    }
+
+    .label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    select, input[type="checkbox"] {
+      transform: scale(1.2);
+      transition: all 0.2s ease;
+    }
+
+    select:hover {
+      cursor: pointer;
+    }
+
+    .toggle {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 20px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 20px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #b266ff;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    .color-options label {
+      display: block;
+      margin-bottom: 5px;
+      transition: color 0.2s ease;
+    }
+
+    .color-options label:hover {
+      color: #b266ff;
+      cursor: pointer;
+    }
+
+    .login input[type="password"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: none;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .login input[type="password"]:focus {
+      outline: none;
+      box-shadow: 0 0 5px #b266ff;
+    }
+
+    .login button {
+      width: 100%;
+      padding: 10px;
+      background-color: #b266ff;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .login button:hover {
+      background-color: #9933ff;
+      transform: scale(1.03);
+    }
+
+    /* 💜 Loader */
+    #loading-screen {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      display: none;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #b266ff;
+      border-top: 6px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ✨ Panel Effect */
+    .active-effect {
+      animation: pulse 0.5s ease;
+      box-shadow: 0 0 10px #b266ff;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 transparent; }
+      50% { transform: scale(1.05); box-shadow: 0 0 15px #b266ff; }
+      100% { transform: scale(1); box-shadow: 0 0 0 transparent; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 💜 Loading Spinner -->
+  <div id="loading-screen">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- 🔒 Login -->
+  <div class="login show" id="login">
+    <h2>JAIK FREE PANEL</h2>
+    <input type="password" id="password" placeholder="Enter password">
+    <button onclick="checkLogin()">Login</button>
+  </div>
+
+  <!-- 🔧 Panel -->
+  <div class="panel hidden" id="panel">
+    <h2>JAIK PANEL IOS / ANDROID</h2>
+    <div class="section">
+      <div class="label">
+        <span>ดูดหัว</span>
+        <select>
+          <option>ปกติ</option>
+          <option>ต่ำ</option>
+          <option>กลาง</option>
+          <option>สูง</option>
+        </select>
+      </div>
+      <div class="label">
+        <span>ช่วยลาก 88%</span>
+        <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+      <div class="label">
+        <span>DPI 4990</span>
+        <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+      <div class="label">
+        <span>FPS 140</span>
+        <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+      <div class="label">
+        <span>144 Hz</span>
+        <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+      <div class="label">
+        <span>จอสมูท</span>
+        <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+    </div>
+    <div class="section color-options">
+      <label><input type="checkbox"> กันรายงาน</label>
+      <label><input type="checkbox"> กันแบน</label>
+      <label><input type="checkbox"> กันติดดำ</label>
+      <label><input type="checkbox"> ลบประวัติการรายงาน</label>
+    </div>
+    <div class="section">
+      <div class="label">
+        <span>เปิดใช้งานพาแนล</span>
+        <label class="toggle">
+          <input type="checkbox" id="enable-panel-toggle">
+          <span class="slider" id="panel-slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔁 SCRIPT -->
+  <script>
+    function checkLogin() {
+      const password = document.getElementById('password').value;
+      const loading = document.getElementById('loading-screen');
+
+      if (password === 'JAIK-VISION-88') {
+        loading.style.display = 'flex'; // Show loading
+
+        setTimeout(() => {
+          const login = document.getElementById('login');
+          const panel = document.getElementById('panel');
+
+          login.classList.remove('show');
+          setTimeout(() => {
+            login.classList.add('hidden');
+            panel.classList.remove('hidden');
+            loading.style.display = 'none'; // Hide loading
+
+            setTimeout(() => {
+              panel.classList.add('show');
+            }, 50);
+          }, 300);
+        }, 1500); // simulate loading
+      } else {
+        alert('Incorrect password!');
+      }
+    }
+
+    // 🎯 Panel Effect
+    document.getElementById('enable-panel-toggle').addEventListener('change', function() {
+      const slider = document.getElementById('panel-slider');
+      slider.classList.add('active-effect');
+      setTimeout(() => slider.classList.remove('active-effect'), 500);
+    });
+  </script>
+</body>
+</html>
